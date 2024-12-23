@@ -19,3 +19,8 @@ pip intsall streamlit pandas
 **Start the streamlit app by running application**
 
 streamlit run (file name).py
+
+**Credit to the creator of the data csv:**
+tiangechen on Github 
+
+**Idea of the project is licensed under the MIT License**
