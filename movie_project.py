@@ -1,5 +1,5 @@
 
-
+import streamlit as st
 import pandas as pd
 
 # load dataset
@@ -27,16 +27,25 @@ def recommend_movies_by_genre(genre, min_score,df,top_n=5):
     return recommended[['Film', 'Genre', 'Audience score %']].sort_values(
         by='Audience score %', ascending=False).head(top_n)
 
+#Streamlit App
+st.title("Movie Recommendation System")
+st.write("Get Movie Recommendation based off of genre and audience score!")
+
+
+
 # Example recommendation
-genre = input("Enter a genre (e.g., Comedy, Romance): ")
-min_score = float(input("Enter a minimum audience score (e.g., 50): "))
-top_n = int(input("How many recommendations would you like? "))
+genre = st.text_input("Enter a genre (e.g., Comedy, Romance):")
+min_score = st.slider("Minimum Audience Score:", 0, 100, 50)
+top_n = st.slider("Number of Recommendations:", 1, 10, 5)
 
-recommendations = recommend_movies_by_genre(genre, min_score, movies_df, top_n)
+if st.button("Get Recommendations"):
+    if genre:
+        recommendations = recommend_movies_by_genre(genre, min_score, movies_df, top_n)
+        if not recommendations.empty:
+            st.write("Here are your recommendations:")
+            st.dataframe(recommendations)
+        else:
+            st.write(f"No movies found for genre '{genre}' with a score above {min_score}.")
+    else:
+        st.write("Please enter a genre.")
 
-# Display the recommendations
-if not recommendations.empty:
-    print("\nRecommended Movies:")
-    print(recommendations)
-else:
-    print(f"No movies found for genre '{genre}' with an audience score above {min_score}.")
